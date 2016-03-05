@@ -1,0 +1,23 @@
+{
+  "name": "eqh",
+  "main": "eqh.js",
+  "homepage": "https://github.com/HoodWeb/eqh",
+  "authors": [
+    "HoodWeb info@hood.dk"
+  ],
+  "description": "Equal Height Script",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "eqh"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
