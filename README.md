@@ -2,6 +2,9 @@
 
 This is a simple vanilla JavaScript, which helps HTML elements being of equal height. Which can be an annoying issue while managing dynamic content.
 
+## Installation
+```bower install eqh```
+
 ## How to use
 ```
 window.onload = function(){
