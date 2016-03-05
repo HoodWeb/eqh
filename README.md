@@ -20,7 +20,7 @@ It is recommended to run the script after the HTML and CSS has been loaded.
 
 ### Options
 1. ```rowAware``` (default = false). This will attempt to find the tallest html element, in the same row.
-2. ```useMinHeight``` (default = false). This basically styles the targetet elements with the min-height style, rather than the height style
+2. ```useMinHeight``` (default = false). This basically styles the targetet elements with the min-height css property, rather than the height property
 3. ```siblings``` (default = true). This option will need to be changed, based on the structure of your HTML.
   To put it in [Emmet syntax](http://docs.emmet.io/abbreviations/syntax/): 
     * div>div*4>.target = siblings: false
