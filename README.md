@@ -16,7 +16,7 @@ window.onload = function(){
 ```
 
 You simply call the _eqh() method. First parameter being a selector (You can use almost any css selector). Second parameter is an options object.
-It is recommended to run load the script after the HTML and CSS has been loaded.
+It is recommended to run the script after the HTML and CSS has been loaded.
 
 ### Options
 1. ```rowAware``` (default = false). This will attempt to find the tallest html element, in the same row.
