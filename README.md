@@ -9,19 +9,15 @@ This is a simple vanilla JavaScript, which helps HTML elements being of equal he
 ```
 window.onload = function(){
 	_eqh('.product',{
-		rowAware: true,
-		siblings: false
+		rowAware: true
 	});
 };
 ```
 
-You simply call the _eqh() method. First parameter being a selector (You can use almost any css selector). Second parameter is an options object.
+You simply call the _eqh() method. First parameter being a selector (You can use almost any CSS3 selector). Second parameter is an options object.
 It is recommended to run the script after the HTML and CSS has been loaded.
 
 ### Options
 1. ```rowAware``` (default = false). This will attempt to find the tallest html element, in the same row.
-2. ```useMinHeight``` (default = false). This basically styles the targetet elements with the min-height css property, rather than the height property
-3. ```siblings``` (default = true). This option will need to be changed, based on the structure of your HTML.
-  To put it in [Emmet syntax](http://docs.emmet.io/abbreviations/syntax/): 
-    * div>div*4>.target = siblings: false
-    * div>.target*4 = siblings: true
+2. ```useMinHeight``` (default = false). This changes the applied css property to ```min-height```instead of ```height```.
+3. ```callBack``` (default = false). This is an optional callback method that will be called after the script has completed.
