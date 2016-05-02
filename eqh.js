@@ -1,82 +1,80 @@
 function _eqh( selector , options ){
-	'use strict';
-	
-	var default_options = {
+    'use strict';
+
+    var default_options = {
         rowAware: false,
-        siblings: true,
-        useMinHeight: false
+        useMinHeight: false,
+        callBack: false
     };
 
-    if(typeof options == 'undefined')
+    if(typeof options === 'undefined')
         var options = default_options;
 
     //Do not change these
     options.rowAware = typeof options.rowAware !== 'undefined' ? options.rowAware : default_options.rowAware;
-    options.siblings = typeof options.siblings !== 'undefined' ? options.siblings : default_options.siblings;
     options.useMinHeight = typeof options.useMinHeight !== 'undefined' ? options.useMinHeight : default_options.useMinHeight;
+    options.callBack = typeof options.callBack === 'function' ? options.callBack : default_options.callBack;
 
-	//Prepare variables
-	var s = document.querySelectorAll( selector );
-	var groups = [];
+    //Prepare variables
+    var s = document.querySelectorAll( selector );
 
-	var getChildIndex = function(child){
-		var i = 0;
-		while( (child = child.previousElementSibling) != null ) 
-			i++;
-		return i;
-	};
-	var eqhByGrp = function(group){
-		var newHeightForGroup = 0;
-		for(var i=0;i<group.length;i++){
-			if(group[i].offsetHeight > newHeightForGroup)
-				newHeightForGroup = group[i].offsetHeight;
-		}
+    var eqhByGrp = function(group){
+        var newHeightForGroup = 0;
+        for(var i=0;i<group.length;i++){
+            if(group[i].offsetHeight > newHeightForGroup)
+                newHeightForGroup = group[i].offsetHeight;
+        }
 
-		for(var i=0;i<group.length;i++){
-			if(options.useMinHeight)
+        for(var i=0;i<group.length;i++){
+            if(options.useMinHeight)
                 group[i].style.minHeight = newHeightForGroup + 'px';
             else
                 group[i].style.height = newHeightForGroup + 'px';
-		}
-	};
-	
+        }
+    };
 
-	if(options.rowAware === false){//Height = highest of all with same class
-		eqhByGrp(s);
-	}else{//Height = highest in row
-		if(options.siblings === true){
-			//Group by offsetTop
-			for(var i=0,r=0,rowOffset=0;i<s.length;i++){
-				if(s[i].offsetTop > rowOffset){ //Is a new row
-					if(i!=0) eqhByGrp(groups[r]);
+    var findPos = function(obj){
+        if(obj.offsetParent){
+            var curleft = obj.offsetTop || 0,
+                curtop = obj.offsetLeft || 0;
+            while(obj = obj.offsetParent){
+                curleft += obj.offsetLeft;
+                curtop += obj.offsetTop;
+            }
+            return {
+                left: curleft,
+                top: curtop
+            };
+        }
+    }
 
-					if(i!=0) r++;
+    if(options.rowAware === false){//Height = highest of all with same class
+        eqhByGrp(s);
+    }else{//highest in row
+        //Convert NodeList to Array
+        var group = Array.prototype.slice.call(s);
+        //Loop though s
+        var i=0;
+        while(group.length){
+            //Take current s and find others with same offset top, and eqh them.
+            var queue = new Array();
+            var templateOffset = group[i].getBoundingClientRect().y;
+            for(var j=0;j<group.length;j++){
+                if(group[j].getBoundingClientRect().y === templateOffset){
+                    queue.push( group[j] );
+                }
+            }
+            //After eqhing, remove them from the loop, to avoid unnessesary loops
+            eqhByGrp(queue);
+            for(var k=0;k<queue.length;k++){
+                group.splice(
+                    group.indexOf(queue[k])
+                    , 1);
+            }
+        }
+    }
 
-					groups[r] = new Array( s[i] );
-					rowOffset=s[i].offsetTop;
-				}else{
-					groups[r].push(s[i]);
-				}
-
-				if(i==s.length-1){
-					eqhByGrp(groups[r]);
-				}
-			}
-		}else{
-			//Group by child index
-			for(var i=0;i<s.length;i++){
-				var sibling_index = getChildIndex(s[i]);
-				if( groups[sibling_index] )
-					groups[sibling_index].push(s[i]);
-				else
-					groups[sibling_index] = new Array( s[i] );
-			}
-
-			//eqh by group
-			for(var i=0;i<groups.length;i++){
-				eqhByGrp(groups[i]);
-			}
-		}
-
-	}
+    //Run callback method
+    if(options.callBack)
+        options.callBack();
 }
