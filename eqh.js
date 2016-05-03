@@ -58,9 +58,10 @@ function _eqh( selector , options ){
         while(group.length){
             //Take current s and find others with same offset top, and eqh them.
             var queue = new Array();
-            var templateOffset = group[i].getBoundingClientRect().y;
+            var templateOffset = group[i].getBoundingClientRect().y || group[i].getBoundingClientRect().top;
             for(var j=0;j<group.length;j++){
-                if(group[j].getBoundingClientRect().y === templateOffset){
+                var currentOffset = group[j].getBoundingClientRect().y || group[j].getBoundingClientRect().top;
+                if(currentOffset === templateOffset){
                     queue.push( group[j] );
                 }
             }
@@ -78,3 +79,6 @@ function _eqh( selector , options ){
     if(options.callBack)
         options.callBack();
 }
+
+
+
